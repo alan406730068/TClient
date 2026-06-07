@@ -13,10 +13,10 @@ public class UILogin : MonoBehaviour
 
     private void OnBtnConnect_Click() 
     {
-        Debug.Log("connect!");
+        NetworkClient.Instance.Connect();
     }
     private void OnBtnLogin_Click()
     {
-        Debug.Log("login!");
+        NetworkClient.Instance.SendData("Hello");
     }
 }
