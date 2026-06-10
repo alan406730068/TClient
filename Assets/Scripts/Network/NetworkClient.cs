@@ -35,6 +35,11 @@ public class NetworkClient : MonoBehaviour, INetEventListener
         Init();
     }
 
+    private void Update()
+    {
+        _netManager.PollEvents();
+    }
+
     private void Init()
     {
         _dataWriter = new NetDataWriter();
@@ -100,9 +105,15 @@ public class NetworkClient : MonoBehaviour, INetEventListener
         throw new System.NotImplementedException();
     }
 
+    // 顯示當前延遲
     public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
     {
-        throw new System.NotImplementedException();
+        Debug.Log($"延遲: {latency}ms");
+
+        if (latency > 200)
+        {
+            Debug.Log("網路延遲過高！");
+        }
     }
     #endregion
 }
