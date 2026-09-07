@@ -3,20 +3,19 @@ using UnityEngine.UI;
 
 public class UILogin : MonoBehaviour
 {
-    [SerializeField] Button BtnConnect;
     [SerializeField] Button BtnLogin;
+    [SerializeField] Button BtnQuit;
     void Start()
     {
-        BtnConnect.onClick.AddListener(OnBtnConnect_Click);
         BtnLogin.onClick.AddListener(OnBtnLogin_Click);
+        BtnQuit.onClick.AddListener(OnBtnQuit_Click);
     }
 
-    private void OnBtnConnect_Click() 
-    {
-        NetworkClient.Instance.Connect();
-    }
     private void OnBtnLogin_Click()
     {
         NetworkClient.Instance.SendData("Hello");
+    }
+    private void OnBtnQuit_Click()
+    {
     }
 }
