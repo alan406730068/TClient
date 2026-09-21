@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 public class UILogin : MonoBehaviour
 {
@@ -10,9 +11,11 @@ public class UILogin : MonoBehaviour
     [SerializeField] TMP_InputField InputUserName;
     [SerializeField] TMP_InputField InputPassword;
     [SerializeField] TMP_Text TxtError;
+    [SerializeField] GameObject Go_loadingBar;
 
     private string userName;
     private string password;
+
     private const string errorMessage = "Invalid username or password.";
     void Start()
     {
@@ -22,18 +25,39 @@ public class UILogin : MonoBehaviour
         InputPassword.onValueChanged.AddListener(OnInputPassword_Changed);
     }
 
+    #region Button Event    
     private void OnBtnLogin_Click()
     {
-        if (false)
+        StopCoroutine(loginProcess());
+        StartCoroutine(loginProcess());
+    }
+    private IEnumerator loginProcess()
+    {
+        showLoginUI(true);
+
+        NetworkClient.Instance.Connect();
+        while (!NetworkClient.Instance.IsConnected)
         {
-            TxtError.text = errorMessage;
+            Debug.Log("Waiting for connection...");
+            yield return null;
         }
-        TxtError.text = string.Empty;
-        NetworkClient.Instance.SendData("Hello");
+        Debug.Log("Connect Success");
+        showLoginUI(false);
+    }
+
+    private void showLoginUI(bool islogining, string errorText = "")
+    {
+        BtnLogin.interactable = !islogining;
+        Go_loadingBar.SetActive(islogining);
+        TxtError.text = errorText;
     }
     private void OnBtnQuit_Click()
     {
     }
+
+    #endregion
+
+    #region InputField Event
     private void OnInputUserName_Changed(string value)
     {
         userName = value;
@@ -53,4 +77,6 @@ public class UILogin : MonoBehaviour
 
         BtnLogin.interactable = isValid;
     }
+    #endregion
+
 }

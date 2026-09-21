@@ -10,6 +10,8 @@ public class NetworkClient : MonoBehaviour, INetEventListener
     private NetPeer _serverPeer;
     private NetDataWriter _dataWriter;
 
+    public bool IsConnected { get; private set; }
+
     private static NetworkClient _instance;
 
     public static NetworkClient Instance
